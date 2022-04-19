@@ -2,8 +2,9 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { RoadmapType } from '../../lib/roadmap';
 import RoadmapGroup from '../../pages/[roadmap]/[group]';
-import { CheckIcon, CloseIcon, RepeatIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, RepeatIcon, QuestionIcon, InfoIcon } from '@chakra-ui/icons';
 import { queryGroupElementsById } from '../../lib/renderer/utils';
+
 
 type ContentDrawerProps = {
   roadmap: RoadmapType;
@@ -17,7 +18,10 @@ export function ContentDrawer(props: ContentDrawerProps) {
     return null;
   }
 
-  const isDone = localStorage.getItem(groupId) === 'done';
+  const expert = localStorage.getItem(groupId) === 'done';
+  const pupil = localStorage.getItem(groupId) === 'needPractice';
+  const newbie = localStorage.getItem(groupId) === 'needRevision';
+  const unknown = localStorage.getItem(groupId) === 'study';
 
   return (
     <Box zIndex={99999} pos="relative">
@@ -49,16 +53,20 @@ export function ContentDrawer(props: ContentDrawerProps) {
             alignItems="center"
             zIndex={1}
           >
-            {!isDone && (
+{/* Expert button*/}
+            {!expert && (
               <Button
                 onClick={() => {
                   localStorage.setItem(groupId, 'done');
                   queryGroupElementsById(groupId).forEach((item) =>
                     item?.classList?.add('done')
                   );
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('needPractice', 'needRevision', 'study')
+                  );
                   onClose();
                 }}
-                colorScheme="green"
+                colorScheme="blue"
                 leftIcon={<CheckIcon />}
                 size="xs"
                 iconSpacing={0}
@@ -68,11 +76,11 @@ export function ContentDrawer(props: ContentDrawerProps) {
                   d={['block', 'none', 'none', 'block']}
                   ml="10px"
                 >
-                  Mark as Done
+                  Expert
                 </Text>
               </Button>
             )}
-            {isDone && (
+            {expert && (
               <Button
                 onClick={() => {
                   localStorage.removeItem(groupId);
@@ -81,7 +89,7 @@ export function ContentDrawer(props: ContentDrawerProps) {
                   );
                   onClose();
                 }}
-                colorScheme="red"
+                colorScheme="purple"
                 leftIcon={<RepeatIcon />}
                 size="xs"
                 iconSpacing={0}
@@ -95,6 +103,10 @@ export function ContentDrawer(props: ContentDrawerProps) {
                 </Text>
               </Button>
             )}
+{/* Expert button end*/}
+
+{/* Close button */}
+
             <Button
               onClick={onClose}
               colorScheme="yellow"
@@ -108,6 +120,173 @@ export function ContentDrawer(props: ContentDrawerProps) {
               </Text>
             </Button>
           </Flex>
+{/* Close button end */}
+
+          <Box
+            mt="2px"
+          >
+{/* pupil button */}
+            {!pupil && (
+              <Button
+                onClick={() => {
+                  localStorage.setItem(groupId, 'needPractice');
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.add('needPractice')
+                  );
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('done', 'needRevision', 'study')
+                  );
+                  onClose();
+                }}
+                colorScheme="green"
+                leftIcon={<CheckIcon />}
+                size="xs"
+                iconSpacing={0}
+              >
+                <Text
+                  as="span"
+                  d={['block', 'none', 'none', 'block']}
+                  ml="10px"
+                >
+                  pupil
+                </Text>
+              </Button>
+            )}
+            {pupil && (
+              <Button
+                onClick={() => {
+                  localStorage.removeItem(groupId);
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('needPractice')
+                  );
+                  onClose();
+                }}
+                colorScheme="purple"
+                leftIcon={<RepeatIcon />}
+                size="xs"
+                iconSpacing={0}
+              >
+                <Text
+                  as="span"
+                  d={['block', 'none', 'none', 'block']}
+                  ml="10px"
+                >
+                  Mark as Pending
+                </Text>
+              </Button>
+            )}
+{/* pupil end */}
+          </Box>
+          <Box
+            mt="2px"
+          >
+{/* Newbie button */}
+            {!newbie && (
+              <Button
+                onClick={() => {
+                  localStorage.setItem(groupId, 'needRevision');
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.add('needRevision')
+                  );
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('done', 'needPractice', 'study')
+                  );
+                  onClose();
+                }}
+                colorScheme="gray"
+                leftIcon={<InfoIcon />}
+                size="xs"
+                iconSpacing={0}
+              >
+                <Text
+                  as="span"
+                  d={['block', 'none', 'none', 'block']}
+                  ml="10px"
+                >
+                  Newbie
+                </Text>
+              </Button>
+            )}
+            {newbie && (
+              <Button
+                onClick={() => {
+                  localStorage.removeItem(groupId);
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('needRevision')
+                  );
+                  onClose();
+                }}
+                colorScheme="purple"
+                leftIcon={<RepeatIcon />}
+                size="xs"
+                iconSpacing={0}
+              >
+                <Text
+                  as="span"
+                  d={['block', 'none', 'none', 'block']}
+                  ml="10px"
+                >
+                  Mark as Pending
+                </Text>
+              </Button>
+            )}
+{/* Newbie button end */}
+          </Box>
+          <Box
+            mt="2px"
+          >
+{/* Unknown button */}
+            {!unknown && (
+              <Button
+                onClick={() => {
+                  localStorage.setItem(groupId, 'study');
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.add('study')
+                  );
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('done', 'needPractice', 'needRevision')
+                  );
+                  onClose();
+                }}
+                colorScheme="red"
+                leftIcon={<QuestionIcon />}
+                size="xs"
+                iconSpacing={0}
+              >
+                <Text
+                  as="span"
+                  d={['block', 'none', 'none', 'block']}
+                  ml="10px"
+                >
+                  Unknown
+                </Text>
+              </Button>
+            )}
+            {unknown && (
+              <Button
+                onClick={() => {
+                  localStorage.removeItem(groupId);
+                  queryGroupElementsById(groupId).forEach((item) =>
+                    item?.classList?.remove('study')
+                  );
+                  onClose();
+                }}
+                colorScheme="purple"
+                leftIcon={<RepeatIcon />}
+                size="xs"
+                iconSpacing={0}
+              >
+                <Text
+                  as="span"
+                  d={['block', 'none', 'none', 'block']}
+                  ml="10px"
+                >
+                  Mark as Pending
+                </Text>
+              </Button>
+            )}
+          </Box>
+{/* Unknown button end */}
           <RoadmapGroup isOutlet roadmap={roadmap} group={groupId} />
         </Box>
       </RemoveScroll>
