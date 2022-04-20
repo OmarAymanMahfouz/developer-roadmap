@@ -48,6 +48,19 @@ const GlobalStyles = css`
     & rect { fill: #cbcbcb !important; }
     & text { text-decoration: line-through; }
   }
+
+  svg .needPractice {
+    & rect { fill: #cbcbcb !important; }
+  }
+
+  svg .needRevision {
+    & rect { fill: green !important; }
+  }
+
+
+  svg .study {
+    & rect { fill: red !important; }
+  }
 `;
 
 

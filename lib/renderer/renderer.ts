@@ -258,18 +258,23 @@ export class Renderer {
       container
     );
   }
-//replace done with expert
+
+
   __group__(control: any, container: any) {
     const controlName = control?.properties?.controlName;
     const groupId = removeSortingInfo(controlName);
-    const isDone = localStorage.getItem(groupId) === 'done';
+    const expert = localStorage.getItem(groupId) === 'done';
+    const deepKnowledge = localStorage.getItem(groupId) === 'needPractice';
+    const shallowKnowledge = localStorage.getItem(groupId) === 'needRevision';
+    const noKnowledge = localStorage.getItem(groupId) === 'study';
 
     let group = makeSVGElement(
       'g',
       {
         ...(controlName
           ? {
-              class: `clickable-group ${isDone ? 'done' : ''}`,
+              class: `clickable-group ${expert ? 'done' : deepKnowledge ? 'needPractice' : 
+              shallowKnowledge ? 'needRevision' : noKnowledge ? 'study' : ''}`,
               'data-group-id': controlName,
             }
           : {}),

@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { RoadmapType } from '../../lib/roadmap';
 import RoadmapGroup from '../../pages/[roadmap]/[group]';
-import { CheckIcon, CloseIcon, RepeatIcon, QuestionIcon, InfoIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, RepeatIcon, QuestionIcon, InfoIcon, MoonIcon } from '@chakra-ui/icons';
 import { queryGroupElementsById } from '../../lib/renderer/utils';
 
 
@@ -19,9 +19,9 @@ export function ContentDrawer(props: ContentDrawerProps) {
   }
 
   const expert = localStorage.getItem(groupId) === 'done';
-  const pupil = localStorage.getItem(groupId) === 'needPractice';
-  const newbie = localStorage.getItem(groupId) === 'needRevision';
-  const unknown = localStorage.getItem(groupId) === 'study';
+  const deepKnowledge = localStorage.getItem(groupId) === 'needPractice';
+  const shallowKnowledge = localStorage.getItem(groupId) === 'needRevision';
+  const NoKnowledge = localStorage.getItem(groupId) === 'study';
 
   return (
     <Box zIndex={99999} pos="relative">
@@ -126,7 +126,7 @@ export function ContentDrawer(props: ContentDrawerProps) {
             mt="2px"
           >
 {/* pupil button */}
-            {!pupil && (
+            {!deepKnowledge && (
               <Button
                 onClick={() => {
                   localStorage.setItem(groupId, 'needPractice');
@@ -139,7 +139,7 @@ export function ContentDrawer(props: ContentDrawerProps) {
                   onClose();
                 }}
                 colorScheme="green"
-                leftIcon={<CheckIcon />}
+                leftIcon={<MoonIcon />}
                 size="xs"
                 iconSpacing={0}
               >
@@ -148,11 +148,11 @@ export function ContentDrawer(props: ContentDrawerProps) {
                   d={['block', 'none', 'none', 'block']}
                   ml="10px"
                 >
-                  pupil
+                  Deep Knowledge
                 </Text>
               </Button>
             )}
-            {pupil && (
+            {deepKnowledge && (
               <Button
                 onClick={() => {
                   localStorage.removeItem(groupId);
@@ -181,7 +181,7 @@ export function ContentDrawer(props: ContentDrawerProps) {
             mt="2px"
           >
 {/* Newbie button */}
-            {!newbie && (
+            {!shallowKnowledge && (
               <Button
                 onClick={() => {
                   localStorage.setItem(groupId, 'needRevision');
@@ -203,11 +203,11 @@ export function ContentDrawer(props: ContentDrawerProps) {
                   d={['block', 'none', 'none', 'block']}
                   ml="10px"
                 >
-                  Newbie
+                  Shallow Knowledge
                 </Text>
               </Button>
             )}
-            {newbie && (
+            {shallowKnowledge && (
               <Button
                 onClick={() => {
                   localStorage.removeItem(groupId);
@@ -236,7 +236,7 @@ export function ContentDrawer(props: ContentDrawerProps) {
             mt="2px"
           >
 {/* Unknown button */}
-            {!unknown && (
+            {!NoKnowledge && (
               <Button
                 onClick={() => {
                   localStorage.setItem(groupId, 'study');
@@ -258,11 +258,11 @@ export function ContentDrawer(props: ContentDrawerProps) {
                   d={['block', 'none', 'none', 'block']}
                   ml="10px"
                 >
-                  Unknown
+                  No Knowledge
                 </Text>
               </Button>
             )}
-            {unknown && (
+            {NoKnowledge && (
               <Button
                 onClick={() => {
                   localStorage.removeItem(groupId);
